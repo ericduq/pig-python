@@ -5,15 +5,23 @@ import numpy as np
 
 #info [[line[0:5],line[5:9],line[9:11],line[11:13],line[13:17]] for line in sys.stdin.readlines()]
 with open('extracted_files_2days.txt') as f:
-	info=[[line[0:5],line[5:9],line[9:11],line[11:13],line[13:17]] for line in f.readlines()]
+	filenames=[line.strip().strip('\n') for line in f.readlines()] 
 
-#print wtype
-wtype=info[0][:]
-yr=info[1][:]
-mo=info[2][:]
-day=info[3][:]
-hour=info[4][:]
+units= [[fn[0:5],fn[5:9],fn[9:11],fn[11:13],fn[13:17]] for fn in filenames] 
+
+wtype=units[0][:]
+yr=units[1][:]
+mo=units[2][:]
+day=units[3][:]
+hour=units[4][:]
 newcolumns=['wtype','yr','mo','day','hour']
-test=df.DataFrame(info, columns=newcolumns)
-print test
-print test.hour
+units_df=df.DataFrame(units, columns=newcolumns)
+
+filenames= [['../nldas/'+fn] for fn in filenames]
+
+for fn in filenames:
+	fn=''.join(fn)
+	with open(fn) as f:
+		data=[line.strip() for line in f.readlines()]
+	print fn
+	#print data
